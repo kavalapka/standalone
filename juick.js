@@ -322,7 +322,18 @@ function urlify(text) {
     } else if (cls == 'vimeo') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'imgur'){
-      return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
+      var iid = get_imgurid(url);
+      console.log('iid: ', iid);
+      var a = '<blockquote class="imgur-embed-pub" lang="en" data-id="' + iid + '"></blockquote>';
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = 'http://s.imgur.com/min/embed.js';
+      s.async = true;
+      setTimeout(function(){
+        console.info('Append ', s, ' to ', document.body);
+        document.body.appendChild(s);
+      }, 300);
+      return a
     } else if (cls == 'video') {
       var width = window.innerWidth <= 800? window.innerWidth : 800;
       var height = width*0.6125;
