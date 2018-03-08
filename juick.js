@@ -255,7 +255,7 @@ function classify(url){
   } else if (/twitter.com/.test(url)){
     return 'twitter'
   } else if (/gfycat.com/.test(url)){
-    return 'media'
+    return 'gfycat'
   } else if (/instagram.com\/p/.test(url)){
     return 'media'
   } else if (/\.(mp4|webm)$/.test(url)) {
@@ -319,6 +319,9 @@ function urlify(text) {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'media') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
+    } else if (cls == 'gfycat') {
+      let data_id = url.match(/gfycat.com\/(.*)/)[1]
+      return `<div style='position:relative;padding-bottom:100%'><iframe src='https://gfycat.com/ifr/${data_id}' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>`;
     } else if (cls == 'vimeo') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'imgur'){
