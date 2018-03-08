@@ -322,8 +322,19 @@ function urlify(text) {
     } else if (cls == 'vimeo') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'imgur'){
-      return `<a class="media" href="${url}">${decodeURIComponent(url)}</a>`;
-    } else if (cls == 'gfycat') {
+      var iid = get_imgurid(url);
+      console.log('iid: ', iid);
+      var a = '<blockquote class="imgur-embed-pub" lang="en" data-id="' + iid + '"></blockquote>';
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = 'http://s.imgur.com/min/embed.js';
+      s.async = true;
+      setTimeout(function(){
+        console.info('Append ', s, ' to ', document.body);
+        document.body.appendChild(s);
+      }, 300);
+      return a
+      } else if (cls == 'gfycat') {
       window.setTimeout(() => gfyCollection.init(), 100);
       let data_id = url.match(/gfycat.com\/(.*)/)[1]
       return `<div class='gfyitem' data-autoplay="true" data-id='${data_id}'></div>`;
