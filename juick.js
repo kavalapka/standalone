@@ -252,7 +252,7 @@ function classify(url){
     return 'imgur'
   } else if (/coub.com/.test(url)){
     return 'coub'
-  } else if (/twitter.com/.test(url)){
+  } else if (/twitter.com\/.*\/status/.test(url)){
     return 'twitter'
   } else if (/gfycat.com/.test(url)){
     return 'gfycat'
