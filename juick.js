@@ -318,7 +318,8 @@ function urlify(text) {
       var height = width*0.6125;
       return '<iframe id="ytplayer" type="text/html" width="'+width+'" height="'+height+'" src="http://www.youtube.com/embed/'+yid+'" frameborder="0"></iframe>';
     } else if (cls == 'coub') {
-      return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
+      var coub_id = url.match(/coub.com\/view\/(.*)/)[1]
+      return `<div><div style="left: 0px; width: 100%; height: 0px; position: relative; padding-bottom: 56.249%;"><iframe src="http://coub.com/embed/${coub_id}" frameborder="0" allowfullscreen="" scrolling="no" style="top: 0px; left: 0px; width: 100%; height: 100%; position: absolute;"></iframe></div></div>`;
     } else if (cls == 'media') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'gfycat') {
