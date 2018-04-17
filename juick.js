@@ -246,6 +246,8 @@ function classify(url){
     return 'youtube'
   } else if (/vimeo.com/.test(url)){
     return 'vimeo'
+  } else if (/reddit.com\/r\/.*\/comments/.test(url)) {
+    return 'reddit'
   } else if (/reddituploads/.test(url)) {
     return 'image'
   } else if (/^https?:\/\/(?:i.)?imgur.com/.test(url)) {
@@ -353,6 +355,16 @@ function urlify(text) {
         document.body.appendChild(s);
       }, 300);
       return '<blockquote class="twitter-tweet"><a href="'+url+'"></a></blockquote>';
+    } else if (cls == 'reddit'){
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = 'https://embed.redditmedia.com/widgets/platform.js';
+      s.async = true;
+      setTimeout(function(){
+        console.info('Append ', s, ' to ', document.body);
+        document.body.appendChild(s);
+      }, 300);
+      return '<blockquote class="reddit-card"><a href="'+url+'"></a></blockquote>';
     } else {
       return '<a class="a_other" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     }
