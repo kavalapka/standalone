@@ -259,7 +259,7 @@ function classify(url){
   } else if (/gfycat.com/.test(url)){
     return 'gfycat'
   } else if (/instagram.com\/p/.test(url)){
-    return 'media'
+    return 'instagram'
   } else if (/\.(mp4|webm)$/.test(url)) {
     return 'video'
   } else {
@@ -365,6 +365,18 @@ function urlify(text) {
         document.body.appendChild(s);
       }, 300);
       return '<blockquote class="reddit-card"><a href="'+url+'"></a></blockquote>';
+    } else if (cls == 'instagram'){
+      var width = window.innerWidth <= 800? window.innerWidth : 800;
+      var height = width*0.6125;
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = 'https://platform.instagram.com/en_US/embeds.js';
+      s.async = true;
+      setTimeout(function(){
+        console.info('Append ', s, ' to ', document.body);
+        document.body.appendChild(s);
+      }, 300);
+      return '<blockquote class="instagram-media" style="width:'+width+'px" ><a href="'+url+'"></a></blockquote>';
     } else {
       return '<a class="a_other" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     }
