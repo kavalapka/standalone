@@ -73,7 +73,7 @@ function juickParseMessages(json) {
 
     ihtml+='<div class="text">';
     if(json[i].photo)
-      ihtml+='<div class="photo"><a href="'+json[i].photo.medium+'"><img src="'+json[i].photo.small+'" alt="Photo"/></a></div>';
+      ihtml+='<div class="photo"><a href="'+json[i].attachment.url+'"><img src="'+json[i].attachment.url+'" alt="Photo"/></a></div>';
     if(json[i].video)
       ihtml+='<b>Attachment:</b> <a href="'+json[i].video.mp4+'">Video</a><br/>';
     if(json[i].location)
