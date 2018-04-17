@@ -284,6 +284,24 @@ function get_youtubeid(url){
   return video_id
 }
 
+function getSeconds(str) {
+  var seconds = parseInt(str.match(/(\d+)\s*s/));
+  var days = str.match(/(\d+)\s*d/);
+  var hours = str.match(/(\d+)\s*h/);
+  var minutes = str.match(/(\d+)\s*m/);
+  if (days) { seconds += parseInt(days[1])*86400; }
+  if (hours) { seconds += parseInt(hours[1])*3600; }
+  if (minutes) { seconds += parseInt(minutes[1])*60; }
+  return seconds;
+}
+function get_youtube_time(url) {
+  let timestr = url.match(/&t=(.*)$/)[1];
+  if (!timestr.match('s')) {
+    return timestr;
+  } else timeoffset = getSeconds(timestr)
+  return timeoffset;
+}
+
 function get_imgurid(url){
   // console.log(url);
     var r = /imgur.com\/(?:gallery\/)?(?:a\/)?(\w+)(?:\..+)?/;
@@ -314,9 +332,14 @@ function urlify(text) {
       return '<div class="div_a_pic"><a class="a_pic" href="' + url + '">' + '<img src="'+url+'"style="position: relative; margin: auto;" onerror="this.parentNode.parentNode.parentNode.parentNode.style.display=\'none\';"/></a></div>';
     } else if (cls == 'youtube' && get_youtubeid(url)){
       var yid = get_youtubeid(url);
+      // console.log('youtube link: ', url);
+      // console.log('youtube video id: ', yid);
+      if (url.match(/&t=(.*)$/)) {
+        let timeoffset = get_youtube_time(url);
+      } else timeoffset=0;
       var width = window.innerWidth <= 800? window.innerWidth : 800;
       var height = width*0.6125;
-      return '<iframe id="ytplayer" type="text/html" width="'+width+'" height="'+height+'" src="http://www.youtube.com/embed/'+yid+'" frameborder="0"></iframe>';
+      return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${yid}?rel=0&amp;start=${timeoffset}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     } else if (cls == 'coub') {
       var coub_id = url.match(/coub.com\/view\/(.*)/)[1];
       return `<div><div style="left: 0px; width: 100%; height: 0px; position: relative; padding-bottom: 56.249%;"><iframe src="http://coub.com/embed/${coub_id}" frameborder="0" allowfullscreen="" scrolling="no" style="top: 0px; left: 0px; width: 100%; height: 100%; position: absolute;"></iframe></div></div>`;
