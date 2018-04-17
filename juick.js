@@ -318,15 +318,16 @@ function urlify(text) {
       var height = width*0.6125;
       return '<iframe id="ytplayer" type="text/html" width="'+width+'" height="'+height+'" src="http://www.youtube.com/embed/'+yid+'" frameborder="0"></iframe>';
     } else if (cls == 'coub') {
-      var coub_id = url.match(/coub.com\/view\/(.*)/)[1]
+      var coub_id = url.match(/coub.com\/view\/(.*)/)[1];
       return `<div><div style="left: 0px; width: 100%; height: 0px; position: relative; padding-bottom: 56.249%;"><iframe src="http://coub.com/embed/${coub_id}" frameborder="0" allowfullscreen="" scrolling="no" style="top: 0px; left: 0px; width: 100%; height: 100%; position: absolute;"></iframe></div></div>`;
     } else if (cls == 'media') {
       return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
     } else if (cls == 'gfycat') {
-      let data_id = url.match(/gfycat.com\/(.*)/)[1]
+      let data_id = url.match(/gfycat.com\/(.*)/)[1];
       return `<div style='position:relative;padding-bottom:100%'><iframe src='https://gfycat.com/ifr/${data_id}' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>`;
     } else if (cls == 'vimeo') {
-      return '<a class="media" href="' + url + '">'+decodeURIComponent(url)+'</a>';
+      var vimeo_id = url.match(/vimeo.com\/(.*)/)[1];
+      return `<div><div style="left: 0px; width: 100%; height: 0px; position: relative; padding-bottom: 67.499%;"><iframe src="https://player.vimeo.com/video/${vimeo_id}" frameborder="0" allowfullscreen="" scrolling="no" style="top: 0px; left: 0px; width: 100%; height: 100%; position: absolute;"></iframe></div></div>`;
     } else if (cls == 'imgur'){
       var iid = get_imgurid(url);
       console.log('iid: ', iid);
