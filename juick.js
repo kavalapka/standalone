@@ -150,12 +150,12 @@ function juickParseMessages(json) {
 }
 
 function insertTimehop(id, daysback) {
-  console.log(id);
+  // console.log(id);
   var durl = "http://api.juick.com/messages?uname="+juickName+"&daysback="+daysback;
   console.log(durl);
   $.getJSON( durl).done(function( data ) {
     if (data.length>0) {
-      console.log(data);
+      // console.log(data);
       var timehop=document.createElement("li");
       timehop.innerHTML='<div class="timehop"><a href="#daysback='+daysback+'">Этот день год назад.</a></div>';
       $('#'+id).parent().after(timehop);
@@ -330,14 +330,14 @@ function urlify(text) {
       return `<div><div style="left: 0px; width: 100%; height: 0px; position: relative; padding-bottom: 67.499%;"><iframe src="https://player.vimeo.com/video/${vimeo_id}" frameborder="0" allowfullscreen="" scrolling="no" style="top: 0px; left: 0px; width: 100%; height: 100%; position: absolute;"></iframe></div></div>`;
     } else if (cls == 'imgur'){
       var iid = get_imgurid(url);
-      console.log('iid: ', iid);
+      // console.log('iid: ', iid);
       var a = '<blockquote class="imgur-embed-pub" lang="en" data-id="' + iid + '"></blockquote>';
       var s = document.createElement('script');
       s.type = 'text/javascript';
       s.src = 'http://s.imgur.com/min/embed.js';
       s.async = true;
       setTimeout(function(){
-        console.info('Append ', s, ' to ', document.body);
+        // console.info('Append ', s, ' to ', document.body);
         document.body.appendChild(s);
       }, 300);
       return a
@@ -353,7 +353,7 @@ function urlify(text) {
       s.src = 'https://platform.twitter.com/widgets.js';
       s.async = true;
       setTimeout(function(){
-        console.info('Append ', s, ' to ', document.body);
+        // console.info('Append ', s, ' to ', document.body);
         document.body.appendChild(s);
       }, 300);
       return '<blockquote class="twitter-tweet"><a href="'+url+'"></a></blockquote>';
@@ -363,7 +363,7 @@ function urlify(text) {
       s.src = 'https://embed.redditmedia.com/widgets/platform.js';
       s.async = true;
       setTimeout(function(){
-        console.info('Append ', s, ' to ', document.body);
+        // console.info('Append ', s, ' to ', document.body);
         document.body.appendChild(s);
       }, 300);
       return '<blockquote class="reddit-card"><a href="'+url+'"></a></blockquote>';
@@ -375,7 +375,7 @@ function urlify(text) {
       s.src = 'https://platform.instagram.com/en_US/embeds.js';
       s.async = true;
       setTimeout(function(){
-        console.info('Append ', s, ' to ', document.body);
+        // console.info('Append ', s, ' to ', document.body);
         document.body.appendChild(s);
       }, 300);
       return '<blockquote class="instagram-media" style="width:'+width+'px" ><a href="'+url+'"></a></blockquote>';
