@@ -295,7 +295,7 @@ function getSeconds(str) {
   return seconds;
 }
 function get_youtube_time(url) {
-  let timestr = url.match(/&t=(.*)$/)[1];
+  let timestr = url.match(/t=(.*)$/)[1];
   if (!timestr.match('s')) {
     return timestr;
   } else timeoffset = getSeconds(timestr)
@@ -334,9 +334,9 @@ function urlify(text) {
       var yid = get_youtubeid(url);
       // console.log('youtube link: ', url);
       // console.log('youtube video id: ', yid);
-      if (url.match(/&t=(.*)$/)) {
-        let timeoffset = get_youtube_time(url);
-      } else timeoffset=0;
+      if (url.match(/t=(.*)$/)) {
+        var timeoffset = get_youtube_time(url);
+      } else var timeoffset=0;
       var width = window.innerWidth <= 800? window.innerWidth : 800;
       var height = width*0.6125;
       return `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${yid}?rel=0&amp;start=${timeoffset}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
