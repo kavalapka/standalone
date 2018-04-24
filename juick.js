@@ -113,13 +113,13 @@ function juickParseMessages(json) {
     });
 
       var likesDef = {
-        1: {count: 0, description: "like"},
-        2: {count: 0, description: "love"},
-        3: {count: 0, description: "lol"},
-        4: {count: 0, description: "hmm"},
-        5: {count: 0, description: "angry"},
-        6: {count: 0, description: "uhblya"},
-        7: {count: 0, description: "ugh"}
+        1: {count: 0, description: "like", emoji: "em---1"},
+        2: {count: 0, description: "love", emoji:"em-heart_eyes"},
+        3: {count: 0, description: "lol", emoji:"em-joy"},
+        4: {count: 0, description: "hmm", emoji:"em-thinking_face"},
+        5: {count: 0, description: "angry", emoji:"em-rage"},
+        6: {count: 0, description: "uhblya", emoji:"em-six_pointed_star"},
+        7: {count: 0, description: "ugh", emoji:"em-cry"}
       };
 
 
@@ -152,19 +152,19 @@ function juickParseMessages(json) {
         var count = 0;
 
         if(json[i].reactions){
-            console.log('inside if')
+            console.log('inside if');
             console.log('json[i].reactions serverLikes',json[i].reactions, serverLikes)
             if( a in serverLikes){
-                count = serverLikes[a].count;
+                var count = serverLikes[a].count;
             }
 
         }
           likes += '<a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
-              + likesDef[a].description + '</a>'
+              + '<i class="em '+likesDef[a].emoji +'"></i></a>'
               + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span>';
 
         //console.log('likesDef mid', json[i], a);
-      };
+      }
 
 
     /*var likes = '<span style="align-self: end; text-align: center; flex: 1">' +
