@@ -81,13 +81,107 @@ function juickParseMessages(json) {
     ihtml+=juickFormatText(json[i].body || "");
     ihtml+='</div>';
 
-    ihtml+='<div class="meta"><span class="timestamp">';
 
+
+      $(".like").click(function (e) {
+          var me = $(this);
+          e.preventDefault();
+
+      if (me.data('requestRunning')) {
+        return;
+      }
+
+      me.data('requestRunning', true);
+
+        $.post({
+            url: 'http://api.juick.com/react',
+            data: {
+                mid: me.data('mid'),
+                reactionId: me.data('id'),
+                hash: '7DIS7WEOA0XQPG5Y'
+            },
+            success: function (text) {
+                var likesCounterId = me.data('mid').toString() + me.data('id').toString();
+                var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
+                document.getElementById(likesCounterId).textContent = (likesCounterVal + 1).toString() + ' ';
+                console.log('count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
+            },
+            complete: function () {
+                me.data('requestRunning', false);
+            }
+        })
+    });
+
+      var likesDef = {
+        1: {count: 0, description: "like"},
+        2: {count: 0, description: "love"},
+        3: {count: 0, description: "lol"},
+        4: {count: 0, description: "hmm"},
+        5: {count: 0, description: "angry"},
+        6: {count: 0, description: "uhblya"},
+        7: {count: 0, description: "ugh"}
+      };
+
+
+      console.log('likesAvailable', likesAvailable);
+      var serverLikes = {};
+
+      if(json[i].reactions){
+        var likesAvailable = json[i].reactions;
+
+        for (var q=0; q< likesAvailable.length; q++){
+          var id = likesAvailable[q].id;
+          serverLikes[id] = likesAvailable[q]
+          }
+        console.log('serverlikes', serverLikes)
+      }
+      var likes = '';
+      /*if(likesAvailable) {
+          for (var q = 0; q < likesAvailable.length; q++) {
+              if (likesAvailable[q].id in [1, 2, 3, 4, 5, 6, 7]) {
+                  likes += '<a class="like" data-id="'+likesAvailable[q].id+'" data-mid="'+json[i].mid+'">'
+                      + likesAvailable[q].description +'</a>'
+                      + '<span class="counter" id="'+json[i].mid+likesAvailable[q].id+'">'+likesAvailable[q].count + ' '+'</span>'
+              }
+          }
+      }*/
+
+
+
+      for (var a = 1; a < 8; a++){
+        var count = 0;
+
+        if(json[i].reactions){
+            console.log('inside if')
+            console.log('json[i].reactions serverLikes',json[i].reactions, serverLikes)
+            if( a in serverLikes){
+                count = serverLikes[a].count;
+            }
+
+        }
+          likes += '<a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
+              + likesDef[a].description + '</a>'
+              + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span>';
+
+        //console.log('likesDef mid', json[i], a);
+      };
+
+
+    /*var likes = '<span style="align-self: end; text-align: center; flex: 1">' +
+     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=1\\&hash=7DIS7WEOA0XQPG5Y">like1</a>' +
+     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=2\\&hash=7DIS7WEOA0XQPG5Y">love 2</a>' +
+     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=2\\&hash=7DIS7WEOA0XQPG5Y">lol 3</a>' +
+     '</span>';
+     */
+
+    ihtml += '<div class="meta" style="display: flex">';
     if (!juickGetHashVar("message")) {
-      ihtml+='<a href="#message='+json[i].mid+'">'+currdate+'</a></span></div>';
-    } else { ihtml+=currdate+'</span></div>'; }
 
-    ihtml+='</div>'
+      ihtml+='<span style="align-self: end; text-align: center; flex: 1">'+ likes+
+          '</span><span class="timestamp"><a href="#message='+json[i].mid+'">'+currdate+'</a></span></div>';
+    } else { ihtml+='<span class="timestamp">' + currdate+'</span></div>'; }
+
+    ihtml+='</div>';
 
     var li=document.createElement("li");
     li.innerHTML=ihtml;
