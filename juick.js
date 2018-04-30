@@ -83,59 +83,62 @@ function juickParseMessages(json) {
 
 
 
-      $(".like").click(function (e) {
-          var me = $(this);
-          e.preventDefault();
+    $(".like").click(function (e) {
+        var me = $(this);
+        e.preventDefault();
 
       if (me.data('requestRunning')) {
         return;
       }
 
       me.data('requestRunning', true);
+      var magicLikes = Math.floor(Math.random()*12)+1;
 
-        $.post({
-            url: 'http://api.juick.com/react',
-            data: {
-                mid: me.data('mid'),
-                reactionId: me.data('id'),
-                hash: '7DIS7WEOA0XQPG5Y'
-            },
-            success: function (text) {
-                var likesCounterId = me.data('mid').toString() + me.data('id').toString();
-                var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
-                document.getElementById(likesCounterId).textContent = (likesCounterVal + 1).toString() + ' ';
-                console.log('count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
-            },
-            complete: function () {
-                me.data('requestRunning', false);
-            }
-        })
+      $.post({
+        url: 'http://api.juick.com/react',
+        data: {
+          mid: me.data('mid'),
+          reactionId: me.data('id'),
+          hash: '7DIS7WEOA0XQPG5Y',
+          count: magicLikes
+        },
+        success: function (text) {
+          var likesCounterId = me.data('mid').toString() + me.data('id').toString();
+          var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
+          if (isNaN(likesCounterVal)){
+            likesCounterVal = 0;
+          }
+          document.getElementById(likesCounterId).textContent = (likesCounterVal + magicLikes).toString() + ' ';
+          console.log('Success post, count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
+        },
+        complete: function () {
+          me.data('requestRunning', false);
+        }
+      })
     });
 
-      var likesDef = {
-        1: {count: 0, description: "like", emoji: "em---1"},
-        2: {count: 0, description: "love", emoji:"em-heart_eyes"},
-        3: {count: 0, description: "lol", emoji:"em-joy"},
-        4: {count: 0, description: "hmm", emoji:"em-thinking_face"},
-        5: {count: 0, description: "angry", emoji:"em-rage"},
-        6: {count: 0, description: "uhblya", emoji:"em-six_pointed_star"},
-        7: {count: 0, description: "ugh", emoji:"em-cry"}
-      };
+    var likesDef = {
+      1: {count: 0, description: "like", emoji: "em---1"},
+      2: {count: 0, description: "love", emoji:"em-heart_eyes"},
+      3: {count: 0, description: "lol", emoji:"em-joy"},
+      4: {count: 0, description: "hmm", emoji:"em-thinking_face"},
+      5: {count: 0, description: "angry", emoji:"em-rage"},
+      6: {count: 0, description: "uhblya", emoji:"em-six_pointed_star"},
+      7: {count: 0, description: "ugh", emoji:"em-cry"}
+    };
 
 
-      console.log('likesAvailable', likesAvailable);
-      var serverLikes = {};
+    var serverLikes = {};
 
-      if(json[i].reactions){
-        var likesAvailable = json[i].reactions;
+    if(json[i].reactions){
+      var likesAvailable = json[i].reactions;
 
-        for (var q=0; q< likesAvailable.length; q++){
-          var id = likesAvailable[q].id;
-          serverLikes[id] = likesAvailable[q]
-          }
-        console.log('serverlikes', serverLikes)
+      for (var q=0; q< likesAvailable.length; q++){
+        var id = likesAvailable[q].id;
+        serverLikes[id] = likesAvailable[q]
       }
-      var likes = '';
+    }
+
       /*if(likesAvailable) {
           for (var q = 0; q < likesAvailable.length; q++) {
               if (likesAvailable[q].id in [1, 2, 3, 4, 5, 6, 7]) {
@@ -147,24 +150,20 @@ function juickParseMessages(json) {
       }*/
 
 
+    var likes = '';
+    for (var a = 1; a < 8; a++){
 
-      for (var a = 1; a < 8; a++){
-        var count = 0;
-
-        if(json[i].reactions){
-            console.log('inside if');
-            console.log('json[i].reactions serverLikes',json[i].reactions, serverLikes)
-            if( a in serverLikes){
-                var count = serverLikes[a].count;
-            }
-
+      var count = " ";
+      if(json[i].reactions){
+        if( a in serverLikes){
+          var count = serverLikes[a].count;
         }
-          likes += '<a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
+      }
+
+      likes += '<a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
               + '<i class="em '+likesDef[a].emoji +'"></i></a>'
               + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span>';
-
-        //console.log('likesDef mid', json[i], a);
-      }
+    }
 
 
     /*var likes = '<span style="align-self: end; text-align: center; flex: 1">' +
