@@ -51,10 +51,23 @@ h1 a:visited {
     font-size: 14px;
     color: #999;
     text-align: right;
+    display: flex;
+}
+#messages .meta .likes{
+    align-self: end;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+#messages .meta .likes-pair {
+    padding: 0 16px 0 0;
+    display: flex;
+    align-items: flex-end;
 }
 #messages .meta .timestamp {
     font-size: 14px;
-    margin: 10px 10px 0;
+    margin: 0 10px 0 0;
     color: #999;
 }
 #messages .photo {
@@ -151,4 +164,28 @@ h1 a:visited {
 }
 #messages .imgur-embed-iframe-pub {
     display: block;
+}
+
+@media (min-width: 600px) {
+    #messages .meta {
+        float: bottom;
+        font-size: 14px;
+        color: #999;
+        text-align: right;
+        display: flex;
+    }
+    #messages .meta .likes{
+        align-self: end;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-content: space-between;
+        flex: 1;
+    }
+    #messages .meta .timestamp {
+        font-size: 14px;
+        margin: 10px 10px 0;
+        color: #999;
+    }
+
 }

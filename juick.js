@@ -139,16 +139,6 @@ function juickParseMessages(json) {
       }
     }
 
-      /*if(likesAvailable) {
-          for (var q = 0; q < likesAvailable.length; q++) {
-              if (likesAvailable[q].id in [1, 2, 3, 4, 5, 6, 7]) {
-                  likes += '<a class="like" data-id="'+likesAvailable[q].id+'" data-mid="'+json[i].mid+'">'
-                      + likesAvailable[q].description +'</a>'
-                      + '<span class="counter" id="'+json[i].mid+likesAvailable[q].id+'">'+likesAvailable[q].count + ' '+'</span>'
-              }
-          }
-      }*/
-
 
     var likes = '';
     for (var a = 1; a < 8; a++){
@@ -160,23 +150,16 @@ function juickParseMessages(json) {
         }
       }
 
-      likes += '<a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
+      likes += '<span class="likes-pair"><a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
               + '<i class="em '+likesDef[a].emoji +'"></i></a>'
-              + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span>';
+              + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span></span>';
     }
 
 
-    /*var likes = '<span style="align-self: end; text-align: center; flex: 1">' +
-     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=1\\&hash=7DIS7WEOA0XQPG5Y">like1</a>' +
-     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=2\\&hash=7DIS7WEOA0XQPG5Y">love 2</a>' +
-     '<a href="http://api.juick.com/react?'+json[i].mid+'\\&reactionId=2\\&hash=7DIS7WEOA0XQPG5Y">lol 3</a>' +
-     '</span>';
-     */
-
-    ihtml += '<div class="meta" style="display: flex">';
+    ihtml += '<div class="meta">';
     if (!juickGetHashVar("message")) {
 
-      ihtml+='<span style="align-self: end; text-align: center; flex: 1">'+ likes+
+      ihtml+='<span class="likes" >'+ likes+
           '</span><span class="timestamp"><a href="#message='+json[i].mid+'">'+currdate+'</a></span></div>';
     } else { ihtml+='<span class="timestamp">' + currdate+'</span></div>'; }
 
