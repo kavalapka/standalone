@@ -59,6 +59,7 @@ h1 a:visited {
     justify-content: center;
     flex-wrap: wrap;
     align-content: space-between;
+    margin: 10px 0 0 0;
 }
 #messages .meta .likes-pair {
     padding: 0 16px 0 0;
