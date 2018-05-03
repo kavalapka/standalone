@@ -81,13 +81,89 @@ function juickParseMessages(json) {
     ihtml+=juickFormatText(json[i].body || "");
     ihtml+='</div>';
 
-    ihtml+='<div class="meta"><span class="timestamp">';
 
+
+    $(".like").click(function (e) {
+        var me = $(this);
+        e.preventDefault();
+
+      if (me.data('requestRunning')) {
+        return;
+      }
+
+      me.data('requestRunning', true);
+      var magicLikes = Math.floor(Math.random()*12)+1;
+
+      $.post({
+        url: 'http://api.juick.com/react',
+        data: {
+          mid: me.data('mid'),
+          reactionId: me.data('id'),
+          hash: '7DIS7WEOA0XQPG5Y',
+          count: magicLikes
+        },
+        success: function (text) {
+          var likesCounterId = me.data('mid').toString() + me.data('id').toString();
+          var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
+          if (isNaN(likesCounterVal)){
+            likesCounterVal = 0;
+          }
+          document.getElementById(likesCounterId).textContent = (likesCounterVal + magicLikes).toString() + ' ';
+          console.log('Success post, count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
+        },
+        complete: function () {
+          me.data('requestRunning', false);
+        }
+      })
+    });
+
+    var likesDef = {
+      1: {count: 0, description: "like", emoji: "em---1"},
+      2: {count: 0, description: "love", emoji:"em-heart_eyes"},
+      3: {count: 0, description: "lol", emoji:"em-joy"},
+      4: {count: 0, description: "hmm", emoji:"em-thinking_face"},
+      5: {count: 0, description: "angry", emoji:"em-rage"},
+      6: {count: 0, description: "uhblya", emoji:"em-six_pointed_star"},
+      7: {count: 0, description: "ugh", emoji:"em-cry"}
+    };
+
+
+    var serverLikes = {};
+
+    if(json[i].reactions){
+      var likesAvailable = json[i].reactions;
+
+      for (var q=0; q< likesAvailable.length; q++){
+        var id = likesAvailable[q].id;
+        serverLikes[id] = likesAvailable[q]
+      }
+    }
+
+
+    var likes = '';
+    for (var a = 1; a < 8; a++){
+
+      var count = " ";
+      if(json[i].reactions){
+        if( a in serverLikes){
+          var count = serverLikes[a].count;
+        }
+      }
+
+      likes += '<span class="likes-pair"><a class="like" data-id="' + a + '" data-mid="' + json[i].mid + '">'
+              + '<i class="em '+likesDef[a].emoji +'"></i></a>'
+              + '<span class="counter" id="' + json[i].mid + a + '">' + count + ' ' + '</span></span>';
+    }
+
+
+    ihtml += '<div class="meta">';
     if (!juickGetHashVar("message")) {
-      ihtml+='<a href="#message='+json[i].mid+'">'+currdate+'</a></span></div>';
-    } else { ihtml+=currdate+'</span></div>'; }
 
-    ihtml+='</div>'
+      ihtml+='<span class="likes" >'+ likes+
+          '</span><span class="timestamp"><a href="#message='+json[i].mid+'">'+currdate+'</a></span></div>';
+    } else { ihtml+='<span class="timestamp">' + currdate+'</span></div>'; }
+
+    ihtml+='</div>';
 
     var li=document.createElement("li");
     li.innerHTML=ihtml;
