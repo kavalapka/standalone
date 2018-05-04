@@ -83,38 +83,40 @@ function juickParseMessages(json) {
 
 
 
-    $(".like").click(function (e) {
+    $(function() {
+      $(".like").click(function (e) {
         var me = $(this);
         e.preventDefault();
 
-      if (me.data('requestRunning')) {
-        return;
-      }
-
-      me.data('requestRunning', true);
-      var magicLikes = Math.floor(Math.random()*12)+1;
-
-      $.post({
-        url: 'http://api.juick.com/react',
-        data: {
-          mid: me.data('mid'),
-          reactionId: me.data('id'),
-          hash: '7DIS7WEOA0XQPG5Y',
-          count: magicLikes
-        },
-        success: function (text) {
-          var likesCounterId = me.data('mid').toString() + me.data('id').toString();
-          var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
-          if (isNaN(likesCounterVal)){
-            likesCounterVal = 0;
-          }
-          document.getElementById(likesCounterId).textContent = (likesCounterVal + magicLikes).toString() + ' ';
-          console.log('Success post, count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
-        },
-        complete: function () {
-          me.data('requestRunning', false);
+        if (me.data('requestRunning')) {
+          return;
         }
-      })
+
+        me.data('requestRunning', true);
+        var magicLikes = Math.floor(Math.random() * 12) + 1;
+
+        $.post({
+          url: 'http://api.juick.com/react',
+          data: {
+            mid: me.data('mid'),
+            reactionId: me.data('id'),
+            hash: '7DIS7WEOA0XQPG5Y',
+            count: magicLikes
+          },
+          success: function (text) {
+            var likesCounterId = me.data('mid').toString() + me.data('id').toString();
+            var likesCounterVal = parseInt(document.getElementById(likesCounterId).textContent);
+            if (isNaN(likesCounterVal)) {
+              likesCounterVal = 0;
+            }
+            document.getElementById(likesCounterId).textContent = (likesCounterVal + magicLikes).toString() + ' ';
+            //console.log('Success post, count:', likesCounterId, likesCounterVal, document.getElementById(likesCounterId));
+          },
+          complete: function () {
+            me.data('requestRunning', false);
+          }
+        })
+      });
     });
 
     var likesDef = {
