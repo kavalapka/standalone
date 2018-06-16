@@ -38,7 +38,7 @@ function juickInit(uname) {
     var url="http://api.juick.com/messages?uname="+uname+"&withrecommended=1";
     if(juickTag && juickTag!='') url+="&tag="+encodeURI(juickTag);
     if(juickLastMid && juickLastMid>0) url+="&before_mid="+juickLastMid;
-    juickLoadScript(url, juickParseThread);
+    juickLoadScript(url, juickParseMessages);
   }
 }
 
