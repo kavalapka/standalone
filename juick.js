@@ -33,7 +33,7 @@ function juickInit(uname) {
     juickLoadScript(url, juickParseThread);
   } else if (daysback) {
     var url = "http://api.juick.com/messages?uname="+uname+"&daysback="+daysback;
-    juickLoadScript(url, juickParseThread);
+    juickLoadScript(url, juickParseMessages);
   } else {
     var url="http://api.juick.com/messages?uname="+uname+"&withrecommended=1";
     if(juickTag && juickTag!='') url+="&tag="+encodeURI(juickTag);
